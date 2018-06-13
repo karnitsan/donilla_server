@@ -6,6 +6,7 @@ import os
 import flasgger
 import flask
 import flask_limiter.util
+from flask_cors import CORS
 
 import api_spec
 import db
@@ -21,7 +22,7 @@ LIMITER = flask_limiter.Limiter(APP, key_func=flask_limiter.util.get_remote_addr
 APP.config['SWAGGER'] = api_spec.CONFIG
 BLUEPRINT = flask.Blueprint('api', __name__)
 flasgger.Swagger(APP)
-
+CORS(APP)
 
 class MissingFields(Exception):
     'Request if missing required fields.'
@@ -90,22 +91,32 @@ def call(handler=None, required_fields=None):
 
 @BLUEPRINT.route("/add_user", methods=['POST'])
 @flasgger.swag_from(api_spec.ADD_USER)
-@call(['user_id', 'full_name'])
-def add_user_handler(user_id, full_name):
+@call(['mail', 'password', 'nick_name'])
+def add_user_handler(mail, password, nick_name):
     """
     Add a user.
     """
-    return {'status': 200, 'user_details': db.add_user(user_id, full_name)}
+    return {'status': 200, 'user_details': db.add_user(mail, password, nick_name)}
 
 
-@BLUEPRINT.route("/get_user/<user_id>", methods=['POST', 'GET'])
+@BLUEPRINT.route("/get_user", methods=['POST', 'GET'])
 @flasgger.swag_from(api_spec.GET_USER)
-@call(['user_id'])
-def get_user_handler(user_id):
+@call(['mail', 'password'])
+def get_user_handler(mail, password):
     """
     Get user details.
     """
-    return {'status': 200, 'user_details': db.get_user(user_id)}
+    return {'status': 200, 'user_details': db.get_user(mail, password)}
+
+
+@BLUEPRINT.route("/add_campain", methods=['POST'])
+@flasgger.swag_from(api_spec.ADD_CAMPAIGN)
+@call(['name', 'amota'])
+def add_campaign_handler(name, amota):
+    """
+    Add a campaign.
+    """
+    return {'status': 200, 'campaign_details': db.add_campaign(name, amota)}
 
 
 @APP.route('/')
