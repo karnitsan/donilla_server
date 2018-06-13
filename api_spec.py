@@ -30,11 +30,15 @@ ADD_USER = {
     'tags': ['user'],
     'parameters': [
         {
-            'name': 'user_id', 'description': 'id of new user',
+            'name': 'mail', 'description': 'mail of new user',
             'in': 'formData', 'required': True, 'type': 'string'
         },
         {
-            'name': 'full_name', 'description': 'full name of new user',
+            'name': 'password', 'description': 'password of new user',
+            'in': 'formData', 'required': True, 'type': 'string'
+        },
+        {
+            'name': 'nick_name', 'description': 'nick of new user',
             'in': 'formData', 'required': True, 'type': 'string'
         }
     ],
@@ -47,11 +51,36 @@ GET_USER = {
     'tags': ['user'],
     'parameters': [
         {
-            'name': 'user_id', 'description': 'id of queried user',
-            'in': 'path', 'required': True, 'type': 'string'
+            'name': 'mail', 'description': 'mail of queried user',
+            'in': 'formData', 'required': True, 'type': 'string'
+        },
+        {
+            'name': 'password', 'description': 'password of queried user',
+            'in': 'formData', 'required': True, 'type': 'string'
         }
     ],
     'responses': {
         '200': {'description': 'user details retrieved'}
+    }
+}
+
+ADD_CAMPAIGN = {
+    'tags': ['campaign'],
+    'parameters': [
+        {
+            'name': 'mail', 'description': 'mail of new user',
+            'in': 'formData', 'required': True, 'type': 'string'
+        },
+        {
+            'name': 'password', 'description': 'password of new user',
+            'in': 'formData', 'required': True, 'type': 'string'
+        },
+        {
+            'name': 'nick_name', 'description': 'nick of new user',
+            'in': 'formData', 'required': True, 'type': 'string'
+        }
+    ],
+    'responses': {
+        '201': {'description': 'user added'}
     }
 }
